@@ -13,6 +13,14 @@ class HtmlElementTest extends TestCase
 
         $this->assertTrue((new HtmlElement('img'))->isVoid());
     }
+    
+    /** @test */
+    function it_generates_attributes()
+    {
+        $element = new HtmlElement('span', ['class' => 'a_span', 'id' => 'the_span']);
+
+        $this->assertSame(' class="a_span" id="the_span"', $element->attributes());
+    }
 
     /** @test */
     function it_generates_a_paragraph_with_content()
