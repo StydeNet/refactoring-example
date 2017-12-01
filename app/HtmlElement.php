@@ -26,7 +26,21 @@ class HtmlElement
     
     public function render()
     {
-        // Si el elemento tiene atributos:
+        $result = $this->open();
+
+        if ($this->isVoid()) {
+            return $result;
+        }
+
+        $result .= $this->content();
+
+        $result .= $this->close();
+
+        return $result;
+    }
+
+    public function open(): string
+    {
         if (! empty($this->attributes)) {
             $htmlAttributes = '';
 
@@ -45,16 +59,21 @@ class HtmlElement
             $result = '<'.$this->name.'>';
         }
 
-        // Si el elemento es void
-        if (in_array($this->name, ['br', 'hr', 'img', 'input', 'meta'])) {
-            return $result;
-        }
-
-        // Imprimir el contenido
-        $result .= htmlentities($this->content, ENT_QUOTES, 'UTF-8');
-        // Cerrar la etiqueta
-        $result .= '</'.$this->name.'>';
-
         return $result;
+    }
+
+    public function isVoid(): bool
+    {
+        return in_array($this->name, ['br', 'hr', 'img', 'input', 'meta']);
+    }
+
+    public function content(): string
+    {
+        return htmlentities($this->content, ENT_QUOTES, 'UTF-8');
+    }
+
+    public function close(): string
+    {
+        return '</'.$this->name.'>';
     }
 }
