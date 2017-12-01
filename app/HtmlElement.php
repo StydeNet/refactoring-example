@@ -41,16 +41,7 @@ class HtmlElement
 
     public function open(): string
     {
-        if ($this->hasAttributes()) {
-            return '<'.$this->name.$this->attributes().'>';
-        } else {
-            return '<'.$this->name.'>';
-        }
-    }
-
-    public function hasAttributes(): bool
-    {
-        return ! empty($this->attributes);
+        return '<'.$this->name.$this->attributes().'>';
     }
 
     public function attributes(): string
@@ -62,6 +53,11 @@ class HtmlElement
         }
 
         return $htmlAttributes;
+    }
+
+    public function hasAttributes(): bool
+    {
+        return ! empty($this->attributes);
     }
 
     protected function renderAttribute($attribute, $value)
