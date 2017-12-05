@@ -85,4 +85,35 @@ class HtmlElementTest extends TestCase
 
         $this->assertSame('<input required>', $element->render());
     }
+
+    /** @test */
+    function it_generates_a_void_element_with_mixed_attributes()
+    {
+        $element = new HtmlElement(
+            'input',
+            ['id' => 'my_paragraph', 'class' => 'paragraph', 'required'],
+            ''
+        );
+
+        $this->assertSame(
+            '<input id="my_paragraph" class="paragraph" required>',
+            $element->render()
+        );
+    }
+
+    /** @test */
+    function it_generates_an_element_with_mixed_attributes()
+    {
+        $element = new HtmlElement(
+            'textarea',
+            ['id' => 'disabled_paragraph', 'class' => 'paragraph', 'disabled'],
+            'Contenido'
+        );
+
+        $this->assertSame(
+            '<textarea id="disabled_paragraph" class="paragraph" disabled>Contenido</textarea>',
+            $element->render()
+        );
+    }
+
 }
