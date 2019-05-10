@@ -28,7 +28,21 @@ class HtmlElement
 
     public function  render()
     {
-        //si el elemento tiene atributos
+        $result = $this->open();
+
+        if ($this->isVoid()){
+            return $result;
+        }
+
+        $result .= $this->content();
+
+        $result .= $this->close();
+
+        return $result;
+    }
+
+    public function open()
+    {
         if (! empty($this->attributes)){
             $htmlAttributes = '';
             foreach ($this->attributes as $attribute => $value){
@@ -45,15 +59,28 @@ class HtmlElement
             $result = '<'.$this->name.'>';
         }
 
-        if (in_array($this->name, ['img','br','hr','input','meta'])){
-            return $result;
-        }
-
-        //imprimit el contenido
-        $result .= htmlentities($this->content,ENT_QUOTES,'UTF-8');
-        //cerrar la etiqueta
-        $result .='</'.$this->name.'>';
         return $result;
+    }
+
+    public function isVoid()
+    {
+        return in_array($this->name, ['img','br','hr','input','meta']);
+    }
+
+    /**
+     * @return string
+     */
+    public function content()
+    {
+        return htmlentities($this->content, ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * @return string
+     */
+    public function close()
+    {
+        return '</' . $this->name . '>';
     }
 
 }

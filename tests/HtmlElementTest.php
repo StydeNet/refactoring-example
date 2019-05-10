@@ -8,6 +8,15 @@ use App\HtmlElement;
 
 class HtmlElementTest extends TestCase
 {
+    function test_it_checks_if_a_element_is_void_or_not()
+    {
+        $this->assertFalse((new HtmlElement('p'))->isVoid());
+
+        $this->assertTrue((new HtmlElement('img'))->isVoid());
+
+        $this->assertTrue((new HtmlElement('input'))->isVoid());
+    }
+
     function test_it_generates_a_paragraph_with_content()
     {
         $element = new HtmlElement('p',[],'este es el contenido');
@@ -88,6 +97,21 @@ class HtmlElementTest extends TestCase
             '<>este es el contenido</>',
             $element->render()
         );
+    }
 
+    function test_it_check_open_tag()
+    {
+        $this->assertSame(
+            '<p>',
+            (new HtmlElement('p'))->open()
+        );
+    }
+
+    function test_it_check_close_tag()
+    {
+        $this->assertSame(
+            '</p>',
+            (new HtmlElement('p'))->close()
+        );
     }
 }
