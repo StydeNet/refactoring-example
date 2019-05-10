@@ -77,5 +77,17 @@ class HtmlElementTest extends TestCase
         $this->assertSame(
             '<input>',
             $element->render()
+        );
+    }
 
+    function test_it_generates_html_without_tag()
+    {
+        $element = new HtmlElement('',[],'este es el contenido');
+
+        $this->assertSame(
+            '<>este es el contenido</>',
+            $element->render()
+        );
+
+    }
 }
