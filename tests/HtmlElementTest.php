@@ -17,6 +17,17 @@ class HtmlElementTest extends TestCase
         $this->assertTrue((new HtmlElement('input'))->isVoid());
     }
 
+    function test_it_generates_attributes()
+    {
+        $element = new HtmlElement('span',['class' => 'a_spam', 'id' => 'the_spam' ]);
+
+        $this->assertSame(
+            ' class="a_spam" id="the_spam"',
+            $element->attributes()
+
+        );
+    }
+
     function test_it_generates_a_paragraph_with_content()
     {
         $element = new HtmlElement('p',[],'este es el contenido');
@@ -77,6 +88,15 @@ class HtmlElementTest extends TestCase
             '<input required>',
             $element->render()
         );
+    }
+
+    function test_check_attributes_is_empty()
+    {
+        $element = new HtmlElement('p',[]);
+        $this->assertFalse(
+            $element->hasAttributes()
+        );
+
     }
 
     function test_it_generates_a_tag_input_without_boolean_attributes()

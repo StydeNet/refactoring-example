@@ -14,7 +14,7 @@ class HtmlAttributes
         $this->attributes = $attributes;
     }
 
-    public function render(): string
+    public function render()
     {
         return array_reduce(array_keys($this->attributes), function ($result, $attribute) {
             return $result . $this->renderAttribute($attribute);

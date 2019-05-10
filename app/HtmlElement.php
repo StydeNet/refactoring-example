@@ -23,44 +23,72 @@ class HtmlElement
     {
         $this->name = $name;
         $this->content = $content;
-        $this->attributes = $attributes;
+        $this->attributes = new HtmlAttributes($attributes);
     }
 
     public function  render()
     {
-        $result = $this->open();
-
         if ($this->isVoid()){
-            return $result;
+            return $this->open();
         }
 
-        $result .= $this->content();
-
-        $result .= $this->close();
-
-        return $result;
+        return $this->open().$this->content().$this->close();
     }
 
     public function open()
     {
-        if (! empty($this->attributes)){
-            $htmlAttributes = '';
-            foreach ($this->attributes as $attribute => $value){
-                if (is_numeric($attribute)){
-                    $htmlAttributes .= ' '.$value;
-                }else{
-                    $htmlAttributes .= ' '.$attribute.'="'.htmlentities($value,ENT_QUOTES,'UTF-8').'"';//
-                }
-            }
-            //abrir la etiqueta con atributos
-            $result = '<'.$this->name.$htmlAttributes.'>';
+        if ($this->hasAttributes()){
+            return '<'.$this->name.$this->attributes->render().'>';
         }else{
-            //abrir la etiqueta sin atributos
-            $result = '<'.$this->name.'>';
+            return '<'.$this->name.'>';
+        }
+    }
+
+    public function attributes()
+    {
+        return $this->attributes->render();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasAttributes()
+    {
+        return !empty($this->getAttributes());
+    }
+
+    /*public function attributes()
+    {
+
+        return array_reduce(array_keys($this->getAttributes()),function ($result,$attribute){
+            return $result . $this->attributes->render($attribute);
+        },'');
+
+        /*$htmlAttributes = '';
+
+        foreach ($this->attributes as $attribute => $value){
+
+            $htmlAttributes .= $this->renderAttribute($attribute,$value);
+
         }
 
-        return $result;
+        return $htmlAttributes;
+    }*/
+
+    /*protected function renderAttribute($attribute)
+    {
+        if (is_numeric($attribute)){
+            return ' '.$this->getAttributes()[$attribute];
+        }
+
+        return ' '.$attribute.'="'.htmlentities($this->getAttributes()[$attribute],ENT_QUOTES,'UTF-8').'"';//
+    }*/
+
+    protected function getAttributes()
+    {
+        return $this->attributes->attributes;
     }
+
 
     public function isVoid()
     {
