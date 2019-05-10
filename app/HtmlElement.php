@@ -1,6 +1,8 @@
 <?php
 
+
 namespace App;
+
 
 class HtmlElement
 {
@@ -17,44 +19,41 @@ class HtmlElement
      */
     private $attributes;
 
-    public function __construct(string $name, array $attributes = [], $content = null)
+    public function __construct(string $name, array $attributes =[], $content = null)
     {
         $this->name = $name;
-        $this->attributes = new HtmlAttributes($attributes);
         $this->content = $content;
+        $this->attributes = $attributes;
     }
-    
-    public function render()
+
+    public function  render()
     {
-        if ($this->isVoid()) {
-            return $this->open();
+        //si el elemento tiene atributos
+        if (! empty($this->attributes)){
+            $htmlAttributes = '';
+            foreach ($this->attributes as $attribute => $value){
+                if (is_numeric($attribute)){
+                    $htmlAttributes .= ' '.$value;
+                }else{
+                    $htmlAttributes .= ' '.$attribute.'="'.htmlentities($value,ENT_QUOTES,'UTF-8').'"';//
+                }
+            }
+            //abrir la etiqueta con atributos
+            $result = '<'.$this->name.$htmlAttributes.'>';
+        }else{
+            //abrir la etiqueta sin atributos
+            $result = '<'.$this->name.'>';
         }
 
-        return $this->open().$this->content().$this->close();
+        if (in_array($this->name, ['img','br','hr','input','meta'])){
+            return $result;
+        }
+
+        //imprimit el contenido
+        $result .= htmlentities($this->content,ENT_QUOTES,'UTF-8');
+        //cerrar la etiqueta
+        $result .='</'.$this->name.'>';
+        return $result;
     }
 
-    public function open(): string
-    {
-        return '<'.$this->name.$this->attributes().'>';
-    }
-
-    public function attributes(): string
-    {
-        return $this->attributes->render();
-    }
-
-    public function isVoid(): bool
-    {
-        return in_array($this->name, ['br', 'hr', 'img', 'input', 'meta']);
-    }
-
-    public function content(): string
-    {
-        return htmlentities($this->content, ENT_QUOTES, 'UTF-8');
-    }
-
-    public function close(): string
-    {
-        return '</'.$this->name.'>';
-    }
 }
