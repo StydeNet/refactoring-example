@@ -2,40 +2,42 @@
 
 require '../vendor/autoload.php';
 
-$element = new \App\HtmlElement('p', [], 'Este es el contenido');
+$element = new \App\HtmlElement('p',[],'este es el contenido');
 
-echo $element->open().'Cualquier contenido'.$element->close();
+echo htmlentities($element->render(),ENT_QUOTES,'utf-8');
 
-exit;
+echo "<br><br>";
 
-echo htmlentities($element->render(), ENT_QUOTES, 'UTF-8');
+$element = new \App\HtmlElement('p',['id' => 'my_paragraph' ],'este es el contenido');
 
-echo '<br><br>';
+echo htmlentities($element->render(),ENT_QUOTES,'utf-8');
 
-$element = new \App\HtmlElement('p', ['id' => 'my_paragraph'], 'Este es el contenido');
+echo "<br><br>";
 
-echo htmlentities($element->render(), ENT_QUOTES, 'UTF-8');
+$element = new \App\HtmlElement('p',['id' => 'my_paragraph','class' => 'paragraph' ],'este es el contenido');
 
-echo '<br><br>';
+echo htmlentities($element->render(),ENT_QUOTES,'utf-8');
 
-$element = new \App\HtmlElement('p', ['id' => 'my_paragraph', 'class' => 'paragraph'], 'Este es el contenido');
+echo "<br><br>";
 
-echo htmlentities($element->render(), ENT_QUOTES, 'UTF-8');
+$element = new \App\HtmlElement('img',['src' => 'img/img.png']);
 
-echo '<br><br>';
+echo htmlentities($element->render(),ENT_QUOTES,'utf-8');
 
-$element = new \App\HtmlElement('img', ['src' => 'img/styde.png']);
+echo "<br><br>";
 
-echo htmlentities($element->render(), ENT_QUOTES, 'UTF-8');
+$element = new \App\HtmlElement('img',['src' => 'img/img.png','title' => 'Curso de "Refactorizacion" en styde']);
 
-echo '<br><br>';
+echo htmlentities($element->render(),ENT_QUOTES,'utf-8');
 
-$element = new \App\HtmlElement('img', ['src' => 'img/styde.png', 'title' => 'Curso de "Refactorización" en Styde']);
+echo "<br><br>";
 
-echo htmlentities($element->render(), ENT_QUOTES, 'UTF-8');
+$element = new \App\HtmlElement('input',['required']);
 
-echo '<br><br>';
+echo htmlentities($element->render(),ENT_QUOTES,'utf-8');
 
-$element = new \App\HtmlElement('input', ['required']);
+echo "<br><br>";
 
-echo htmlentities($element->render(), ENT_QUOTES, 'UTF-8');
+$element = new \App\HtmlElement('input');
+
+echo htmlentities($element->render(),ENT_QUOTES,'utf-8');
